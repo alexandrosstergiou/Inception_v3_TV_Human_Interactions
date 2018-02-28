@@ -12,6 +12,8 @@ from skimage import exposure,io, data, img_as_float
 import tensorflow as tf
 from keras import backend as K
 from keras.preprocessing import image
+from tempfile import mktemp
+import time
 
 
 config = tf.ConfigProto()
@@ -30,7 +32,7 @@ for classes in os.listdir("tv_human_interactions_videos/frames/"):
 np.random.shuffle(fileslist)
 
 classes = []
-images = []
+X = []
 i = 1
 length =len(fileslist)
 for f in fileslist:
@@ -40,14 +42,13 @@ for f in fileslist:
     print("Processed: "+str(i/length))
     img_h = image.img_to_array(img)
     img_h /=255
-    images.append(img_h)
+    X.append(img_h)
     classes.append(img_class)
     i = i+1
 
 
 
-#convert 'images' to array and make 'classes' to one-hot format
-X = np.array(images, dtype='float32')
+X = np.array(X, dtype='float32')
 Y = np.eye(number_classes, dtype='uint8')[classes]
 
 x_train, x_val, y_train, y_val = train_test_split(X, Y, test_size=0.25)
@@ -60,17 +61,22 @@ model = model_inceptionv3(299,299,3,number_classes)
 
 
 #training
-batch_size = 32
+batch_size = 16
 nb_epochs = 100
 
+#datagenerator based on image augmentation
+datagen = image.ImageDataGenerator(rotation_range=40,width_shift_range=0.2,height_shift_range=0.2,zoom_range=0.2,horizontal_flip=True,fill_mode='nearest')
 
-early_stopping_monitor = EarlyStopping(monitor='val_loss',min_delta=0,patience=10,verbose=0,mode='min')
+datagen.fit(x_train)
+
+
+early_stopping_monitor = EarlyStopping(monitor='val_loss',min_delta=0,patience=12,verbose=0,mode='min')
 filepath = "weights.best.hdf5"
 checkpoint = ModelCheckpoint(filepath, monitor='val_acc', verbose=1, save_best_only=True, mode='max')
 callbacks_list = [checkpoint,early_stopping_monitor]
 
 
-history = model.fit(x_train, y_train,batch_size=batch_size,epochs=nb_epochs,callbacks=callbacks_list,shuffle=True, validation_data=(x_val,y_val))
+history = model.fit_generator(datagen.flow(x_train, y_train,batch_size=batch_size),steps_per_epoch=x_train.shape[0] // batch_size, epochs=nb_epochs,callbacks=callbacks_list,shuffle=True, validation_data=(x_val,y_val))
 score = model.evaluate(x_val, y_val, verbose=0)
 
 print('Final score:', score[0])
