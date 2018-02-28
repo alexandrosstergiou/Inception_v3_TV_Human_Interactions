@@ -5,7 +5,7 @@ Applying Transfer Learning on Inception V3 model (weights trained on Imagenet) f
 
 **Activations from the first convolutional layer that handles the input image**
 
-![alt text](https://github.com/alexandrosstergiou/Inception_v3_TV_Human_Interactions/blob/master/images/Grad-cam_18f.png "Grad_cam")
+![alt text](https://github.com/alexandrosstergiou/Inception_v3_TV_Human_Interactions/blob/master/images/Grad-cam-kiss.png "Grad_cam")
 
 **Grad-cam for the kiss class of an example from the HighFive dataset**
 
