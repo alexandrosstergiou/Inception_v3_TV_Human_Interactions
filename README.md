@@ -24,6 +24,19 @@ $ sudo pip install -U scikit-learn
 $ sudo pip install keras-vis
 ```
 
+## References
+This work is based on the following two papers:
+1. Patron-Perez, Alonso, et al. "High Five: Recognising human interactions in TV shows." BMVC, 2010. [[link]](http://www.robots.ox.ac.uk/~alonso/tv_human_interactions.html)
+2. Szegedy, Christian, et al. "Going deeper with convolutions." CVPR, 2015.[[link]](http://openaccess.thecvf.com/content_cvpr_2015/papers/Szegedy_Going_Deeper_With_2015_CVPR_paper.pdf)
+
+If you use this repository for your work, you can cite it as:
+```sh
+@misc{astergiou2018inceptionInteractions},
+title={Inception V3 - TV Human Interactions dataset}
+author={Alexandros Stergiou}
+year={2018}
+```
+
 ## License
 MIT
 
