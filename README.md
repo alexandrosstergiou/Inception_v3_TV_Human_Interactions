@@ -1,13 +1,18 @@
 # Inception V3 for TV Human Interactions dataset
 Applying Transfer Learning on Inception V3 model (weights trained on Imagenet) for the Oxford TV Human Interactions dataset. The network gets as inputs images extracted every 5 frames from videos.
 
-![alt text](https://github.com/alexandrosstergiou/Inception_v3_TV_Human_Interactions/blob/master/inception_v3_activations_vis/layer_1_conv2d_1.png "Layer_1_Conv_2D")
+<p align="center">
+  <img  src="https://github.com/alexandrosstergiou/Inception_v3_TV_Human_Interactions/blob/master/inception_v3_activations_vis/layer_1_conv2d_1.png"></p>
 
-**Activations from the first convolutional layer that handles the input image**
+*Activations from the first convolutional layer that handles the input image*
 
-![alt text](https://github.com/alexandrosstergiou/Inception_v3_TV_Human_Interactions/blob/master/images/Grad-cam-kiss.png "Grad_cam")
 
-**Grad-cam for the kiss class of an example from the HighFive dataset**
+
+<p align="center">
+  <img  src="https://github.com/alexandrosstergiou/Inception_v3_TV_Human_Interactions/blob/master/images/Grad-cam-kiss.png"></p>
+
+*Grad-cam for the kiss class of an example from the HighFive dataset*
+
 
 ## Installation
 Git is required to download and install the repo. You can open Terminal (for Linux and Mac) or cmd (for Windows) and follow these commands:
