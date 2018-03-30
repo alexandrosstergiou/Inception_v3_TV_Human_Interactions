@@ -17,7 +17,10 @@ from keras import backend as K
 def model_inceptionv3(height,width,depth,classes):
     #Built Inception with imagenet pre-trained weights
     model_inceptionv3 = InceptionV3(weights='imagenet', include_top=False, input_shape=(width,height,depth))
-    model_inceptionv3.summary()
+    
+    #Freeze convolutional layers
+    for layer in model_inceptionv3.layers:
+        layer.trainable = False
 
     """
     #avoid input routinely error based on backend
@@ -45,10 +48,6 @@ def model_inceptionv3(height,width,depth,classes):
     #New trainable model
     model = Model(inputs=model_inceptionv3.input, output= predictions)
 
-    # first: train only the top layers (which were randomly initialized)
-    # i.e. freeze all convolutional InceptionV3 layers
-    for layer in model_inceptionv3.layers:
-        layer.trainable = False
 
 
     model.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['accuracy'])
