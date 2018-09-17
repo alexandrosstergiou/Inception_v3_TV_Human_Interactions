@@ -1,6 +1,6 @@
 # Inception V3 for TV Human Interactions dataset
 
-*Code is used as part of our survey on human action & interaction recognition: Understanding human-human interactions: a survey [arXiv](https://arxiv.org/abs/1808.00022)*
+**Code is used as part of our survey on human action & interaction recognition: Understanding human-human interactions: a survey [arXiv](https://arxiv.org/abs/1808.00022)**
 
 Applying Transfer Learning on Inception V3 model (weights trained on Imagenet) for the Oxford TV Human Interactions dataset. The network gets as inputs images extracted every 5 frames from videos.
 
