@@ -16,9 +16,9 @@ from tempfile import mktemp
 import time
 
 
-config = tf.ConfigProto()
+config = tf.compat.v1.ConfigProto()
 config.gpu_options.allow_growth = True
-sess = tf.Session(config = config)
+sess = tf.compat.v1.Session(config = config)
 
 #load images
 fileslist = []
@@ -41,7 +41,7 @@ for f in fileslist:
     img = image.load_img(f, target_size=(299,299))
     print("Processed: "+str(i/length))
     img_h = image.img_to_array(img)
-    img_h /=255
+    img_h /=255 #Normalize?
     X.append(img_h)
     classes.append(img_class)
     i = i+1
@@ -51,8 +51,8 @@ for f in fileslist:
 X = np.array(X, dtype='float32')
 Y = np.eye(number_classes, dtype='uint8')[classes]
 
-x_train, x_val, y_train, y_val = train_test_split(X, Y, test_size=0.25)
-
+x_train, x_valtest, y_train, y_valtest = train_test_split(X, Y, test_size=0.3, random_state = 42)
+x_val, x_test, y_val, y_test = train_test_split(x_trainval, y_trainval, test_size = 0.5, random_state = 42)
 K.clear_session()
 
 #Load model
@@ -72,11 +72,11 @@ datagen.fit(x_train)
 
 early_stopping_monitor = EarlyStopping(monitor='val_loss',min_delta=0,patience=12,verbose=0,mode='min')
 filepath = "weights.best.hdf5"
-checkpoint = ModelCheckpoint(filepath, monitor='val_acc', verbose=1, save_best_only=True, mode='max')
+checkpoint = ModelCheckpoint(filepath, monitor='val_accuracy', verbose=1, save_best_only=True, mode='max')
 callbacks_list = [checkpoint,early_stopping_monitor]
 
 
-history = model.fit_generator(datagen.flow(x_train, y_train,batch_size=batch_size),steps_per_epoch=x_train.shape[0] // batch_size, epochs=nb_epochs,callbacks=callbacks_list,shuffle=True, validation_data=(x_val,y_val))
+history = model.fit(datagen.flow(x_train, y_train,batch_size=batch_size),steps_per_epoch=x_train.shape[0] // batch_size, epochs=nb_epochs,callbacks=callbacks_list,shuffle=True, validation_data=(x_val,y_val))
 score = model.evaluate(x_val, y_val, verbose=0)
 
 print('Final score:', score[0])
@@ -88,15 +88,8 @@ with open("model.json", "w") as json_file:
     json_file.write(json_string)
 
 #Predictions
-x_test, x_test_2, y_test, y_test_2 = train_test_split(X, Y, test_size=0.5)
 eval_1 = model.evaluate(x_test,y_test, verbose=0)
 print("------------------------------")
 print('Test score:', eval_1[0])
 print('Test accuracy:', eval_1[1])
-print("------------------------------")
-
-eval_2 = model.evaluate(x_test_2,y_test_2, verbose=0)
-
-print('Test 2 score:', eval_2[0])
-print('Test 2 accuracy:', eval_2[1])
 print("------------------------------")

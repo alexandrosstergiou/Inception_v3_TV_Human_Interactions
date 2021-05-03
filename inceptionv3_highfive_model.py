@@ -46,11 +46,11 @@ def model_inceptionv3(height,width,depth,classes):
     predictions = Dense(classes, activation='softmax', name='predictions')(fc_1)
 
     #New trainable model
-    model = Model(inputs=model_inceptionv3.input, output= predictions)
+    model = Model(inputs=model_inceptionv3.input, outputs= predictions)
 
 
 
-    model.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['accuracy'])
+    model.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['accuracy', 'precision', 'recall', 'AUC'])
 
     model.summary()
 
