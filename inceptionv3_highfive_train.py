@@ -52,7 +52,7 @@ X = np.array(X, dtype='float32')
 Y = np.eye(number_classes, dtype='uint8')[classes]
 
 x_train, x_valtest, y_train, y_valtest = train_test_split(X, Y, test_size=0.3, random_state = 42)
-x_val, x_test, y_val, y_test = train_test_split(x_trainval, y_trainval, test_size = 0.5, random_state = 42)
+x_val, x_test, y_val, y_test = train_test_split(x_valtest, y_valtest, test_size = 0.5, random_state = 42)
 K.clear_session()
 
 #Load model
